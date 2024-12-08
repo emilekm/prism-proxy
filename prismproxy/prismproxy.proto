@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+option go_package = "github.com/emilekm/prism-proxy/prismproxy";
+
+package prismproxy;
+
+service Proxy {
+  // Get the server details
+  rpc GetServerDetails(Empty) returns (ServerDetails) {}
+  // Continous stream of ServerDetails
+  rpc ServerDetailsUpdates(Empty) returns (stream ServerDetails) {}
+  // Get gameplay details
+  rpc GetGameplayDetails(Empty) returns (GameplayDetails) {}
+  // Continous stream of GameplayDetails
+  rpc GameplayDetailsUpdates(Empty) returns (stream GameplayDetails) {}
+  // APIAdmin command
+  rpc APIAdmin(APIAdminReq) returns (APIAdminResp) {}
+  // Continous stream of ChatMessages
+  rpc ChatMessages(Empty) returns (stream ChatMessage) {}
+  // Continous stream of KillMessages
+  rpc KillMessages(Empty) returns (stream KillMessage) {}
+  // Get all players
+  rpc GetPlayers(Empty) returns (Players) {}
+  // Continous stream of Players
+  rpc PlayersUpdates(Empty) returns (stream PlayersUpdate) {}
+
+  // Get all users
+  rpc UserList(Empty) returns (UserListResp) {}
+  // Add a user
+  rpc AddUser(AddUserReq) returns (UserListResp) {}
+  // Change a user
+  rpc ChangeUser(ChangeUserReq) returns (UserListResp) {}
+  // Delete a user
+  rpc DeleteUser(DeleteUserReq) returns (UserListResp) {}
+}
+
+enum Layer {
+  None = 0;
+  INF = 16;
+  ALT = 32;
+  STD = 64;
+  LRG = 128;
+}
+
+message ServerMap {
+  string name = 1;
+  string mode = 2;
+  Layer layer = 3;
+} 
+
+message ServerDetails {
+  string name = 1; 
+  string ip = 2;
+  int32 port = 3;
+  double startTime = 4;
+  int32 roundWarmup = 5;
+  int32 roundLength = 6;
+  int32 maxPlayers = 7;
+
+  string status = 8;
+  ServerMap map = 9;
+  double round_start_time = 10;
+  int32 players = 11;  
+  string team1 = 12;
+  string team2 = 13;
+  int32 tickets1 = 14;
+  int32 tickets2 = 15;
+  repeated string connected_users = 16; 
+}
+
+message ControlPoint {
+  string id = 1;
+  int32 team = 2;
+}
+
+message Fob {
+  string position = 1;
+  int32 team = 2;
+}
+
+message Rally {
+  string position = 1;
+  int32 team = 2;
+  int32 squad = 3;
+}
+
+message GameplayDetails {
+  repeated ControlPoint control_points = 1;
+  repeated Fob fobs = 2;
+  repeated Rally rallies = 3;
+}
+
+message APIAdminReq {
+  string command = 1;
+}
+
+message APIAdminResp {
+  string response = 1;
+}
+
+enum ChatMessageType {
+  OPFOR = 0;
+  BLUFOR = 1;
+  SQUAD = 2;
+  SERVER_MESSAGE = 3;
+  SERVER = 4;
+  RESPONSE = 5;
+  ADMIN_ALERT = 6;
+  UNKNOWN = -1;
+}
+
+message ChatMessage {
+    ChatMessageType type = 1;
+    int64 timestamp = 2;
+    string channel = 3;
+    string player_name = 4;
+    string content = 5;
+}
+
+message KillMessage {
+  bool is_team_kill = 1;
+  int64 timestamp = 2;
+  string attacker_name = 3;
+  string victim_name = 4;
+  string weapon = 5;
+}
+
+message PlayerDetails {
+  int32 team = 1;
+  string squad = 2;
+  string kit = 3;
+  string vehicle = 4;
+  int32 score = 5;
+  int32 score_teamwork = 6;
+  int32 kills = 7;
+  int32 teamkills = 8;
+  int32 deaths = 9;
+  bool valid = 10;
+  int32 ping = 11;
+  bool idle = 12;
+  bool alive = 13;
+  bool joining = 14;
+  string position = 15;
+  string rotation = 16;
+}
+
+message Player {
+  string name = 1;
+  int32 is_ai_player = 2;
+  string hash = 3;
+  string ip = 4;
+  string profile_id = 5;
+  int32 index = 6;
+  double join_timestamp = 7;
+  PlayerDetails player_details = 8;
+}
+
+message Players {
+  repeated Player players = 1;
+}
+
+message PlayerUpdate {
+  // Partial update containes name, index and player_details
+  bool partial = 1;
+  Player player = 2;
+}
+
+message PlayersUpdate {
+  repeated PlayerUpdate players = 1;
+}
+
+message User {
+  string name = 1;
+  int32 power = 2;
+}
+
+message UserListResp {
+  repeated User users = 1;
+}
+
+message AddUserReq {
+  string name = 1;
+  string password = 2;
+  int32 power = 3;
+}
+
+message ChangeUserReq {
+  string name = 1;
+  string new_name = 2;
+  string new_password = 3;
+  int32 new_power = 4;
+}
+
+message DeleteUserReq {
+  string name = 1;
+}
+
+message Empty {
+
+}
