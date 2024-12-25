@@ -29,6 +29,7 @@ const (
 	Proxy_KillMessages_FullMethodName           = "/prismproxy.Proxy/KillMessages"
 	Proxy_GetPlayers_FullMethodName             = "/prismproxy.Proxy/GetPlayers"
 	Proxy_PlayersUpdates_FullMethodName         = "/prismproxy.Proxy/PlayersUpdates"
+	Proxy_PlayerLeaveUpdates_FullMethodName     = "/prismproxy.Proxy/PlayerLeaveUpdates"
 	Proxy_UserList_FullMethodName               = "/prismproxy.Proxy/UserList"
 	Proxy_AddUser_FullMethodName                = "/prismproxy.Proxy/AddUser"
 	Proxy_ChangeUser_FullMethodName             = "/prismproxy.Proxy/ChangeUser"
@@ -59,6 +60,8 @@ type ProxyClient interface {
 	GetPlayers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Players, error)
 	// Continous stream of Players
 	PlayersUpdates(ctx context.Context, in *Empty, opts ...grpc.CallOption) (Proxy_PlayersUpdatesClient, error)
+	// Continous stream of leaving players
+	PlayerLeaveUpdates(ctx context.Context, in *Empty, opts ...grpc.CallOption) (Proxy_PlayerLeaveUpdatesClient, error)
 	// Get all users
 	UserList(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserListResp, error)
 	// Add a user
@@ -282,6 +285,38 @@ func (x *proxyPlayersUpdatesClient) Recv() (*PlayersUpdate, error) {
 	return m, nil
 }
 
+func (c *proxyClient) PlayerLeaveUpdates(ctx context.Context, in *Empty, opts ...grpc.CallOption) (Proxy_PlayerLeaveUpdatesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Proxy_ServiceDesc.Streams[5], Proxy_PlayerLeaveUpdates_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &proxyPlayerLeaveUpdatesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Proxy_PlayerLeaveUpdatesClient interface {
+	Recv() (*PlayerLeave, error)
+	grpc.ClientStream
+}
+
+type proxyPlayerLeaveUpdatesClient struct {
+	grpc.ClientStream
+}
+
+func (x *proxyPlayerLeaveUpdatesClient) Recv() (*PlayerLeave, error) {
+	m := new(PlayerLeave)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *proxyClient) UserList(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserListResp, error) {
 	out := new(UserListResp)
 	err := c.cc.Invoke(ctx, Proxy_UserList_FullMethodName, in, out, opts...)
@@ -342,6 +377,8 @@ type ProxyServer interface {
 	GetPlayers(context.Context, *Empty) (*Players, error)
 	// Continous stream of Players
 	PlayersUpdates(*Empty, Proxy_PlayersUpdatesServer) error
+	// Continous stream of leaving players
+	PlayerLeaveUpdates(*Empty, Proxy_PlayerLeaveUpdatesServer) error
 	// Get all users
 	UserList(context.Context, *Empty) (*UserListResp, error)
 	// Add a user
@@ -386,6 +423,9 @@ func (UnimplementedProxyServer) GetPlayers(context.Context, *Empty) (*Players, e
 }
 func (UnimplementedProxyServer) PlayersUpdates(*Empty, Proxy_PlayersUpdatesServer) error {
 	return status.Errorf(codes.Unimplemented, "method PlayersUpdates not implemented")
+}
+func (UnimplementedProxyServer) PlayerLeaveUpdates(*Empty, Proxy_PlayerLeaveUpdatesServer) error {
+	return status.Errorf(codes.Unimplemented, "method PlayerLeaveUpdates not implemented")
 }
 func (UnimplementedProxyServer) UserList(context.Context, *Empty) (*UserListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserList not implemented")
@@ -607,6 +647,27 @@ func (x *proxyPlayersUpdatesServer) Send(m *PlayersUpdate) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Proxy_PlayerLeaveUpdates_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Empty)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ProxyServer).PlayerLeaveUpdates(m, &proxyPlayerLeaveUpdatesServer{stream})
+}
+
+type Proxy_PlayerLeaveUpdatesServer interface {
+	Send(*PlayerLeave) error
+	grpc.ServerStream
+}
+
+type proxyPlayerLeaveUpdatesServer struct {
+	grpc.ServerStream
+}
+
+func (x *proxyPlayerLeaveUpdatesServer) Send(m *PlayerLeave) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _Proxy_UserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -747,6 +808,11 @@ var Proxy_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "PlayersUpdates",
 			Handler:       _Proxy_PlayersUpdates_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "PlayerLeaveUpdates",
+			Handler:       _Proxy_PlayerLeaveUpdates_Handler,
 			ServerStreams: true,
 		},
 	},

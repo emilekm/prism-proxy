@@ -25,6 +25,8 @@ service Proxy {
   rpc GetPlayers(Empty) returns (Players) {}
   // Continous stream of Players
   rpc PlayersUpdates(Empty) returns (stream PlayersUpdate) {}
+  // Continous stream of leaving players
+  rpc PlayerLeaveUpdates(Empty) returns (stream PlayerLeave) {}
 
   // Get all users
   rpc UserList(Empty) returns (UserListResp) {}
@@ -157,7 +159,7 @@ message PlayerDetails {
 
 message Player {
   string name = 1;
-  int32 is_ai_player = 2;
+  bool is_ai_player = 2;
   string hash = 3;
   string ip = 4;
   string profile_id = 5;
@@ -178,6 +180,10 @@ message PlayerUpdate {
 
 message PlayersUpdate {
   repeated PlayerUpdate players = 1;
+}
+
+message PlayerLeave {
+  string name = 1;
 }
 
 message User {
