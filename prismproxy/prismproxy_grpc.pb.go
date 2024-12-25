@@ -24,6 +24,7 @@ const (
 	Proxy_GetGameplayDetails_FullMethodName     = "/prismproxy.Proxy/GetGameplayDetails"
 	Proxy_GameplayDetailsUpdates_FullMethodName = "/prismproxy.Proxy/GameplayDetailsUpdates"
 	Proxy_APIAdmin_FullMethodName               = "/prismproxy.Proxy/APIAdmin"
+	Proxy_RACommand_FullMethodName              = "/prismproxy.Proxy/RACommand"
 	Proxy_ChatMessages_FullMethodName           = "/prismproxy.Proxy/ChatMessages"
 	Proxy_KillMessages_FullMethodName           = "/prismproxy.Proxy/KillMessages"
 	Proxy_GetPlayers_FullMethodName             = "/prismproxy.Proxy/GetPlayers"
@@ -48,6 +49,8 @@ type ProxyClient interface {
 	GameplayDetailsUpdates(ctx context.Context, in *Empty, opts ...grpc.CallOption) (Proxy_GameplayDetailsUpdatesClient, error)
 	// APIAdmin command
 	APIAdmin(ctx context.Context, in *APIAdminReq, opts ...grpc.CallOption) (*APIAdminResp, error)
+	// RACommand
+	RACommand(ctx context.Context, in *RACommandReq, opts ...grpc.CallOption) (*RACommandResp, error)
 	// Continous stream of ChatMessages
 	ChatMessages(ctx context.Context, in *Empty, opts ...grpc.CallOption) (Proxy_ChatMessagesClient, error)
 	// Continous stream of KillMessages
@@ -159,6 +162,15 @@ func (x *proxyGameplayDetailsUpdatesClient) Recv() (*GameplayDetails, error) {
 func (c *proxyClient) APIAdmin(ctx context.Context, in *APIAdminReq, opts ...grpc.CallOption) (*APIAdminResp, error) {
 	out := new(APIAdminResp)
 	err := c.cc.Invoke(ctx, Proxy_APIAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *proxyClient) RACommand(ctx context.Context, in *RACommandReq, opts ...grpc.CallOption) (*RACommandResp, error) {
+	out := new(RACommandResp)
+	err := c.cc.Invoke(ctx, Proxy_RACommand_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -320,6 +332,8 @@ type ProxyServer interface {
 	GameplayDetailsUpdates(*Empty, Proxy_GameplayDetailsUpdatesServer) error
 	// APIAdmin command
 	APIAdmin(context.Context, *APIAdminReq) (*APIAdminResp, error)
+	// RACommand
+	RACommand(context.Context, *RACommandReq) (*RACommandResp, error)
 	// Continous stream of ChatMessages
 	ChatMessages(*Empty, Proxy_ChatMessagesServer) error
 	// Continous stream of KillMessages
@@ -357,6 +371,9 @@ func (UnimplementedProxyServer) GameplayDetailsUpdates(*Empty, Proxy_GameplayDet
 }
 func (UnimplementedProxyServer) APIAdmin(context.Context, *APIAdminReq) (*APIAdminResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method APIAdmin not implemented")
+}
+func (UnimplementedProxyServer) RACommand(context.Context, *RACommandReq) (*RACommandResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RACommand not implemented")
 }
 func (UnimplementedProxyServer) ChatMessages(*Empty, Proxy_ChatMessagesServer) error {
 	return status.Errorf(codes.Unimplemented, "method ChatMessages not implemented")
@@ -487,6 +504,24 @@ func _Proxy_APIAdmin_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProxyServer).APIAdmin(ctx, req.(*APIAdminReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Proxy_RACommand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RACommandReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProxyServer).RACommand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Proxy_RACommand_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProxyServer).RACommand(ctx, req.(*RACommandReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -662,6 +697,10 @@ var Proxy_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "APIAdmin",
 			Handler:    _Proxy_APIAdmin_Handler,
+		},
+		{
+			MethodName: "RACommand",
+			Handler:    _Proxy_RACommand_Handler,
 		},
 		{
 			MethodName: "GetPlayers",

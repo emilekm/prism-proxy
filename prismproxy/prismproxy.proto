@@ -15,6 +15,8 @@ service Proxy {
   rpc GameplayDetailsUpdates(Empty) returns (stream GameplayDetails) {}
   // APIAdmin command
   rpc APIAdmin(APIAdminReq) returns (APIAdminResp) {}
+  // RACommand
+  rpc RACommand(RACommandReq) returns (RACommandResp) {}
   // Continous stream of ChatMessages
   rpc ChatMessages(Empty) returns (stream ChatMessage) {}
   // Continous stream of KillMessages
@@ -96,6 +98,15 @@ message APIAdminReq {
 
 message APIAdminResp {
   string response = 1;
+}
+
+message RACommandReq {
+  string command = 1;
+}
+
+message RACommandResp {
+  string topic = 1;
+  string content = 2;
 }
 
 enum ChatMessageType {
