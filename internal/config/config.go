@@ -8,7 +8,7 @@ import (
 
 type PRISM struct {
 	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
+	Port string `yaml:"port"`
 	User string `yaml:"user"`
 	Pass string `yaml:"pass"`
 }
