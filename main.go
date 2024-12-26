@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net"
 	"time"
@@ -30,7 +31,7 @@ func run() error {
 		return err
 	}
 
-	lis, err := net.Listen("tcp", ":7777")
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.Port))
 	if err != nil {
 		return err
 	}

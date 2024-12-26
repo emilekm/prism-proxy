@@ -14,7 +14,8 @@ type PRISM struct {
 }
 
 type Config struct {
-	PRISM PRISM `yaml:"prism"`
+	Port  string `yaml:"port"`
+	PRISM PRISM  `yaml:"prism"`
 }
 
 func New(path string) (*Config, error) {

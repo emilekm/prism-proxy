@@ -1,0 +1,7 @@
+port: 7777
+
+prism:
+  host: localhost
+  port: 4712
+  user: user
+  pass:
