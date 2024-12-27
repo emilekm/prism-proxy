@@ -33,7 +33,7 @@ func (p *Proxy) KillMessages(_ *prismproxy.Empty, stream prismproxy.Proxy_KillMe
 func prismKillMessageToProxy(kill *prism.KillMessage) *prismproxy.KillMessage {
 	return &prismproxy.KillMessage{
 		IsTeamKill:   kill.IsTeamKill,
-		Timestamp:    int64(kill.Timestamp),
+		Timestamp:    kill.Timestamp,
 		AttackerName: kill.AttackerName,
 		VictimName:   kill.VictimName,
 		Weapon:       kill.Weapon,

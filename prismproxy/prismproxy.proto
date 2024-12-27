@@ -124,7 +124,7 @@ enum ChatMessageType {
 
 message ChatMessage {
     ChatMessageType type = 1;
-    int64 timestamp = 2;
+    double timestamp = 2;
     string channel = 3;
     string player_name = 4;
     string content = 5;
@@ -132,7 +132,7 @@ message ChatMessage {
 
 message KillMessage {
   bool is_team_kill = 1;
-  int64 timestamp = 2;
+  double timestamp = 2;
   string attacker_name = 3;
   string victim_name = 4;
   string weapon = 5;

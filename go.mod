@@ -9,7 +9,7 @@ require (
 )
 
 require (
-	github.com/emilekm/go-prbf2 v0.0.0-20241225233614-4ef9e84c1eba
+	github.com/emilekm/go-prbf2 v0.0.0-20241227182211-cb7650cc134c
 	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/text v0.19.0 // indirect

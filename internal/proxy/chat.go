@@ -33,7 +33,7 @@ func (p *Proxy) ChatMessages(_ *prismproxy.Empty, stream prismproxy.Proxy_ChatMe
 func prismChatMessageToProxy(msg *prism.ChatMessage) *prismproxy.ChatMessage {
 	return &prismproxy.ChatMessage{
 		Type:       prismChatMessageTypeToProxy(msg.Type),
-		Timestamp:  int64(msg.Timestamp),
+		Timestamp:  msg.Timestamp,
 		Channel:    msg.Channel,
 		PlayerName: msg.PlayerName,
 		Content:    msg.Content,
