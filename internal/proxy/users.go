@@ -19,7 +19,7 @@ func (p *Proxy) UserList(ctx context.Context, _ *prismproxy.Empty) (*prismproxy.
 }
 
 func (p *Proxy) AddUser(ctx context.Context, req *prismproxy.AddUserReq) (*prismproxy.UserListResp, error) {
-	users, err := p.c.Users.Add(ctx, prism.AddUser{
+	users, err := p.c.Users.Add(ctx, &prism.AddUser{
 		Name:     req.Name,
 		Password: req.Password,
 		Power:    int(req.Power),
@@ -34,7 +34,7 @@ func (p *Proxy) AddUser(ctx context.Context, req *prismproxy.AddUserReq) (*prism
 }
 
 func (p *Proxy) ChangeUser(ctx context.Context, req *prismproxy.ChangeUserReq) (*prismproxy.UserListResp, error) {
-	users, err := p.c.Users.Change(ctx, prism.ChangeUser{
+	users, err := p.c.Users.Change(ctx, &prism.ChangeUser{
 		Name:        req.Name,
 		NewName:     req.NewName,
 		NewPassword: req.NewPassword,
