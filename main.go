@@ -57,5 +57,6 @@ func run() error {
 
 	prismproxy.RegisterProxyServer(gRPCserver, p)
 
+	log.Printf("Starting proxy on port %s", cfg.Port)
 	return gRPCserver.Serve(lis)
 }
