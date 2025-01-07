@@ -9,8 +9,8 @@ COPY go.sum .
 # Download the Go module dependencies
 RUN go mod download
 
-COPY cmd cmd
-COPY pkg pkg
+COPY internal internal
+COPY prismproxy prismproxy
 
 # Build the binary statically
 RUN CGO_ENABLED=0 GOOS=linux go build -o /prism-proxy ./
