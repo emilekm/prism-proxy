@@ -2,7 +2,7 @@ generate:
 	go generate ./...
 
 build: generate
-	GOOS=linux CGO_ENABLED=0 go build -o bin/svctl ./
+	GOOS=linux CGO_ENABLED=0 go build -o bin/prismproxy ./
 
 test: generate
 	go run gotest.tools/gotestsum@v1.11.0 -- -count=1 ./...
