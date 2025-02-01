@@ -11,6 +11,7 @@ RUN go mod download
 
 COPY internal internal
 COPY prismproxy prismproxy
+COPY main.go main.go
 
 # Build the binary statically
 RUN CGO_ENABLED=0 GOOS=linux go build -o /prism-proxy ./
