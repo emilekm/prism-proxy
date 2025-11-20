@@ -56,8 +56,6 @@ func prismChatMessageTypeToProxy(typ prism.ChatMessageType) prismproxy.ChatMessa
 		return prismproxy.ChatMessageType_RESPONSE
 	case prism.ChatMessageTypeAdminAlert:
 		return prismproxy.ChatMessageType_ADMIN_ALERT
-	case prism.ChatMessageUnknown:
-		fallthrough
 	default:
 		return prismproxy.ChatMessageType_UNKNOWN
 	}
