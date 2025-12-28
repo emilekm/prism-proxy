@@ -23,4 +23,3 @@ WORKDIR /app
 COPY --from=build /prism-proxy /prism-proxy
 
 ENTRYPOINT ["/prism-proxy"]
-CMD ["-config", "/app/config.yaml"]
