@@ -1,7 +1,7 @@
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/emilekm/go-prbf2 v0.0.0-20251120154705-91a1833f15e4 h1:jTPH7W1aHJQJ2653lO6qHXUqOKE47KOqVbkL7nSu0dg=
-github.com/emilekm/go-prbf2 v0.0.0-20251120154705-91a1833f15e4/go.mod h1:wPHsgiOYtToaZ9zu4+d6JDsnex7jUan5C2KNPzvgRF8=
+github.com/emilekm/go-prbf2 v0.0.0-20251211144904-8368b37fb63f h1:tTmL5k7dEhKYH+As/lrMfXG2HzX2PteLrwpn4bBoES0=
+github.com/emilekm/go-prbf2 v0.0.0-20251211144904-8368b37fb63f/go.mod h1:wPHsgiOYtToaZ9zu4+d6JDsnex7jUan5C2KNPzvgRF8=
 github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
 github.com/go-logr/logr v1.4.2/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=
