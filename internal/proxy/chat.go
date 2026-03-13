@@ -1,6 +1,8 @@
 package proxy
 
 import (
+	"fmt"
+
 	"github.com/emilekm/go-prbf2/prism"
 	"github.com/emilekm/prism-proxy/prismproxy"
 )
@@ -12,8 +14,12 @@ func (p *Proxy) ChatMessages(_ *prismproxy.Empty, stream prismproxy.Proxy_ChatMe
 	for {
 		select {
 		case <-stream.Context().Done():
-			return nil
-		case msg := <-ch:
+			return stream.Context().Err()
+		case msg, ok := <-ch:
+			if !ok {
+				return fmt.Errorf("subscription channel closed")
+			}
+
 			var chatMsgs prism.ChatMessages
 			err := prism.Unmarshal(msg.Body(), &chatMsgs)
 			if err != nil {

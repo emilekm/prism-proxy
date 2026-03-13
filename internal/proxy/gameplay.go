@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/emilekm/go-prbf2/prism"
 	"github.com/emilekm/prism-proxy/prismproxy"
@@ -27,7 +28,11 @@ func (p *Proxy) GameplayDetailsUpdates(_ *prismproxy.Empty, stream prismproxy.Pr
 		select {
 		case <-stream.Context().Done():
 			return stream.Context().Err()
-		case msg := <-ch:
+		case msg, ok := <-ch:
+			if !ok {
+				return fmt.Errorf("subscription channel closed")
+			}
+
 			var details *prism.GameplayDetails
 			err = prism.Unmarshal(msg.Body(), &details)
 			if err != nil {

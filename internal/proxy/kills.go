@@ -1,6 +1,8 @@
 package proxy
 
 import (
+	"fmt"
+
 	"github.com/emilekm/go-prbf2/prism"
 	"github.com/emilekm/prism-proxy/prismproxy"
 )
@@ -12,8 +14,12 @@ func (p *Proxy) KillMessages(_ *prismproxy.Empty, stream prismproxy.Proxy_KillMe
 	for {
 		select {
 		case <-stream.Context().Done():
-			return nil
-		case msg := <-ch:
+			return stream.Context().Err()
+		case msg, ok := <-ch:
+			if !ok {
+				return fmt.Errorf("subscription channel closed")
+			}
+
 			var killMsg prism.KillMessages
 			err := prism.Unmarshal(msg.Body(), &killMsg)
 			if err != nil {

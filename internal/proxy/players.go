@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/emilekm/go-prbf2/prism"
 	"github.com/emilekm/prism-proxy/prismproxy"
@@ -26,8 +27,12 @@ func (p *Proxy) PlayersUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_Play
 	for {
 		select {
 		case <-stream.Context().Done():
-			return nil
-		case msg := <-ch:
+			return stream.Context().Err()
+		case msg, ok := <-ch:
+			if !ok {
+				return fmt.Errorf("subscription channel closed")
+			}
+
 			var updates prism.UpdatePlayers
 			err = prism.Unmarshal(msg.Body(), &updates)
 			if err != nil {
@@ -52,8 +57,12 @@ func (p *Proxy) PlayerLeaveUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_
 	for {
 		select {
 		case <-stream.Context().Done():
-			return nil
-		case msg := <-ch:
+			return stream.Context().Err()
+		case msg, ok := <-ch:
+			if !ok {
+				return fmt.Errorf("subscription channel closed")
+			}
+
 			var name string
 
 			err = prism.Unmarshal(msg.Body(), &name)

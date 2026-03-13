@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	"github.com/emilekm/go-prbf2/prism"
@@ -17,8 +18,8 @@ func (p *Proxy) GetServerDetails(ctx context.Context, _ *prismproxy.Empty) (*pri
 	return prismServerDetailsToProto(details), nil
 }
 
-func (p *Proxy) ServerDetailsUpdates(_ *prismproxy.Empty, conn prismproxy.Proxy_ServerDetailsUpdatesServer) error {
-	ch, err := p.c.Server.DetailsUpdates(conn.Context())
+func (p *Proxy) ServerDetailsUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_ServerDetailsUpdatesServer) error {
+	ch, err := p.c.Server.DetailsUpdates(stream.Context())
 	if err != nil {
 		return err
 	}
@@ -26,16 +27,20 @@ func (p *Proxy) ServerDetailsUpdates(_ *prismproxy.Empty, conn prismproxy.Proxy_
 
 	for {
 		select {
-		case <-conn.Context().Done():
-			return nil
-		case msg := <-ch:
+		case <-stream.Context().Done():
+			return stream.Context().Err()
+		case msg, ok := <-ch:
+			if !ok {
+				return fmt.Errorf("subscription channel closed")
+			}
+
 			var details prism.ServerDetails
 			err := prism.Unmarshal(msg.Body(), &details)
 			if err != nil {
 				return err
 			}
 
-			err = conn.Send(prismServerDetailsToProto(&details))
+			err = stream.Send(prismServerDetailsToProto(&details))
 			if err != nil {
 				return err
 			}
