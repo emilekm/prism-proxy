@@ -3,7 +3,7 @@ module github.com/emilekm/prism-proxy
 go 1.23.4
 
 require (
-	github.com/emilekm/go-prbf2 v0.0.0-20260321140139-1cb21c7d906d
+	github.com/emilekm/go-prbf2 v0.0.0-20260513075625-81498d8e89d1
 	github.com/goccy/go-yaml v1.15.10
 	google.golang.org/grpc v1.69.2
 	google.golang.org/protobuf v1.36.0
