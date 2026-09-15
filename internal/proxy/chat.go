@@ -8,14 +8,14 @@ import (
 )
 
 func (p *Proxy) ChatMessages(_ *prismproxy.Empty, stream prismproxy.Proxy_ChatMessagesServer) error {
-	ch := p.c.Subscribe(prism.SubjectChat)
-	defer p.c.Unsubscribe(ch)
+	sub := p.c.Subscribe(prism.SubjectChat)
+	defer p.c.Unsubscribe(sub)
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return stream.Context().Err()
-		case msg, ok := <-ch:
+		case msg, ok := <-sub.C:
 			if !ok {
 				return fmt.Errorf("subscription channel closed")
 			}

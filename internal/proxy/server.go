@@ -19,17 +19,17 @@ func (p *Proxy) GetServerDetails(ctx context.Context, _ *prismproxy.Empty) (*pri
 }
 
 func (p *Proxy) ServerDetailsUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_ServerDetailsUpdatesServer) error {
-	ch, err := p.c.Server.DetailsUpdates(stream.Context())
+	sub, err := p.c.Server.DetailsUpdates(stream.Context())
 	if err != nil {
 		return err
 	}
-	defer p.c.Unsubscribe(ch)
+	defer p.c.Unsubscribe(sub)
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return stream.Context().Err()
-		case msg, ok := <-ch:
+		case msg, ok := <-sub.C:
 			if !ok {
 				return fmt.Errorf("subscription channel closed")
 			}

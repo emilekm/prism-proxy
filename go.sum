@@ -8,6 +8,8 @@ github.com/emilekm/go-prbf2 v0.0.0-20260321140139-1cb21c7d906d h1:k5WGb2ShMS6zlG
 github.com/emilekm/go-prbf2 v0.0.0-20260321140139-1cb21c7d906d/go.mod h1:wPHsgiOYtToaZ9zu4+d6JDsnex7jUan5C2KNPzvgRF8=
 github.com/emilekm/go-prbf2 v0.0.0-20260513075625-81498d8e89d1 h1:fx+eQkRLOFd2NKk3YH7jC9tXd2wWMyejJcByY1nKmvk=
 github.com/emilekm/go-prbf2 v0.0.0-20260513075625-81498d8e89d1/go.mod h1:wPHsgiOYtToaZ9zu4+d6JDsnex7jUan5C2KNPzvgRF8=
+github.com/emilekm/go-prbf2 v0.0.0-20260915201002-33cd97f5d6e3 h1:+4Ku7zy8F7s3Nf6oXfllyZg1ZZnKWF9T9uOS3Hr3nNc=
+github.com/emilekm/go-prbf2 v0.0.0-20260915201002-33cd97f5d6e3/go.mod h1:wPHsgiOYtToaZ9zu4+d6JDsnex7jUan5C2KNPzvgRF8=
 github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
 github.com/go-logr/logr v1.4.2/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=

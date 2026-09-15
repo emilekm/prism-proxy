@@ -8,14 +8,14 @@ import (
 )
 
 func (p *Proxy) KillMessages(_ *prismproxy.Empty, stream prismproxy.Proxy_KillMessagesServer) error {
-	ch := p.c.Subscribe(prism.SubjectKill)
-	defer p.c.Unsubscribe(ch)
+	sub := p.c.Subscribe(prism.SubjectKill)
+	defer p.c.Unsubscribe(sub)
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return stream.Context().Err()
-		case msg, ok := <-ch:
+		case msg, ok := <-sub.C:
 			if !ok {
 				return fmt.Errorf("subscription channel closed")
 			}

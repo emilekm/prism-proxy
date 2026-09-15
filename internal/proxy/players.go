@@ -18,17 +18,17 @@ func (p *Proxy) GetPlayers(ctx context.Context, _ *prismproxy.Empty) (*prismprox
 }
 
 func (p *Proxy) PlayersUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_PlayersUpdatesServer) error {
-	ch, err := p.c.Players.ListUpdates(stream.Context())
+	sub, err := p.c.Players.ListUpdates(stream.Context())
 	if err != nil {
 		return err
 	}
-	defer p.c.Unsubscribe(ch)
+	defer p.c.Unsubscribe(sub)
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return stream.Context().Err()
-		case msg, ok := <-ch:
+		case msg, ok := <-sub.C:
 			if !ok {
 				return fmt.Errorf("subscription channel closed")
 			}
@@ -48,17 +48,17 @@ func (p *Proxy) PlayersUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_Play
 }
 
 func (p *Proxy) PlayerLeaveUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_PlayerLeaveUpdatesServer) error {
-	ch, err := p.c.Players.PlayerLeaveUpdates(stream.Context())
+	sub, err := p.c.Players.PlayerLeaveUpdates(stream.Context())
 	if err != nil {
 		return err
 	}
-	defer p.c.Unsubscribe(ch)
+	defer p.c.Unsubscribe(sub)
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return stream.Context().Err()
-		case msg, ok := <-ch:
+		case msg, ok := <-sub.C:
 			if !ok {
 				return fmt.Errorf("subscription channel closed")
 			}

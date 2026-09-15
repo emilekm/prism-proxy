@@ -18,17 +18,17 @@ func (p *Proxy) GetGameplayDetails(ctx context.Context, _ *prismproxy.Empty) (*p
 }
 
 func (p *Proxy) GameplayDetailsUpdates(_ *prismproxy.Empty, stream prismproxy.Proxy_GameplayDetailsUpdatesServer) error {
-	ch, err := p.c.Gameplay.DetailsUpdates(stream.Context())
+	sub, err := p.c.Gameplay.DetailsUpdates(stream.Context())
 	if err != nil {
 		return err
 	}
-	defer p.c.Unsubscribe(ch)
+	defer p.c.Unsubscribe(sub)
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return stream.Context().Err()
-		case msg, ok := <-ch:
+		case msg, ok := <-sub.C:
 			if !ok {
 				return fmt.Errorf("subscription channel closed")
 			}
