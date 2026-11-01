@@ -74,10 +74,19 @@ func run() error {
 
 	log.Printf("Connected and logged into PRISM at %s", *prismAddr)
 
+	go func() {
+		<-prismClient.Context().Done()
+		gRPCserver.Stop()
+	}()
+
 	p := proxy.New(prismClient)
 
 	prismproxy.RegisterProxyServer(gRPCserver, p)
 
 	log.Printf("Starting proxy on port %s", *port)
-	return gRPCserver.Serve(lis)
+	if err := gRPCserver.Serve(lis); err != nil {
+		return err
+	}
+
+	return fmt.Errorf("PRISM connection lost: %w", context.Cause(prismClient.Context()))
 }
